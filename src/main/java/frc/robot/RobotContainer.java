@@ -24,12 +24,14 @@ public class RobotContainer {
   
   // Initialize controller
   private CommandXboxController driverController;
+  private DriveTrainSubsystem drive;
 
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    drive = new DriveTrainSubsystem();
 
     // Instantiate controller and drive
     driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
@@ -41,10 +43,13 @@ public class RobotContainer {
 
   }
 
-  
-  private void configureBindings() {
-    
-  }
+  drive.setDefaultCommand(new DriveCommand(
+    () -> driverController.getLeftY(),
+    () -> driverController.getLeftX(),
+    drive
+  ));
+}
+
 
 
   
