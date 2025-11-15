@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
+import Command.DriveTrainCommand;
+import Subsystems.DriveTrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
@@ -24,6 +27,8 @@ public class RobotContainer {
   
   // Initialize controller
   private CommandXboxController driverController;
+
+  private DriveTrainSubsystem drive;
 
   
 
@@ -36,9 +41,15 @@ public class RobotContainer {
     configureBindings();
 
     // Set a default command for the DriveTrainSubsystem. This is where you supply your joystick
-    // inputs as the speed and rotation for arcadeDrive. Keep in mind that you MUST use a lambda expression, as
-    // this ensures the program is checking for the joystick to have moved periodically (every 20 milliseconds).
-
+    // inputs as the sprogram is checking for the joystick to have moved periodically (every 20 milliseconds).
+    drive.setDefaultCommand(new DriveTrainCommand(
+      () -> driverController.getLeftY(),
+      () -> driverController.getLeftX(),
+      drive)
+      
+      );
+    
+    
   }
 
   
@@ -47,5 +58,6 @@ public class RobotContainer {
   }
 
 
-  
+  //eed and rotation for arcadeDrive. Keep in mind that you MUST use a lambda expression, as
+    // this ensures the p
 }
