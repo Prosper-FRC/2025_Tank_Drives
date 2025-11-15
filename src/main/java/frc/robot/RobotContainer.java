@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.DriveTrainCommand;
+import frc.robot.subsystems.DriveTrainSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -23,6 +25,7 @@ public class RobotContainer {
   // Initialize DriveTrainSubsystem
   
   // Initialize controller
+  private DriveTrainSubSystem drive;
   private CommandXboxController driverController;
 
   
@@ -30,7 +33,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-
+    drive = new DriveTrainSubSystem();
     // Instantiate controller and drive
     driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
     configureBindings();
@@ -38,7 +41,12 @@ public class RobotContainer {
     // Set a default command for the DriveTrainSubsystem. This is where you supply your joystick
     // inputs as the speed and rotation for arcadeDrive. Keep in mind that you MUST use a lambda expression, as
     // this ensures the program is checking for the joystick to have moved periodically (every 20 milliseconds).
+    drive.setDefaultCommand(new DriveTrainCommand(
+      () -> driverController.getLeftY(), 
+      () -> driverController.getLeftX(), 
+      drive)
 
+    );
   }
 
   
