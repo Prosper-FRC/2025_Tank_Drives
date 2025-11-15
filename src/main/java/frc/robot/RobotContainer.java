@@ -15,9 +15,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
+public class RobotContainer {
+
+  private DriveTrainSubsystem drive;
+  // The robot's subsystems and commands are defined here...
+  
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   // Initialize DriveTrainSubsystem
@@ -30,7 +33,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-
+    drive = new DriveTrainSubsystem();
     // Instantiate controller and drive
     driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
     configureBindings();
@@ -38,7 +41,10 @@ public class RobotContainer {
     // Set a default command for the DriveTrainSubsystem. This is where you supply your joystick
     // inputs as the speed and rotation for arcadeDrive. Keep in mind that you MUST use a lambda expression, as
     // this ensures the program is checking for the joystick to have moved periodically (every 20 milliseconds).
-
+    drive.setDefaultCommand(new DriveTrainCommand(
+            () -> -driverController.getLeftY(),
+            () -> driverController.getRightX(),
+            drive));  
   }
 
   
