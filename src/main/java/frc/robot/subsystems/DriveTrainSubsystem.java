@@ -4,9 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Constants;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   /** Creates a new DriveTrainSubsystem. */
@@ -26,7 +30,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backLeft = new CANSparkMax(Constants.DriveConstants.BACK_LEFT_ID, MotorType.kBrushless);
     backRight = new CANSparkMax(Constants.DriveConstants.BACK_RIGHT_ID, MotorType.kBrushless);
 
-    drive new DifferentialDrive(frontLeft, frontRight);
+    drive = new DifferentialDrive(frontLeft, frontRight);
 
     backLeft.follow(frontLeft);
     backRight.follow(frontRight);
