@@ -11,14 +11,14 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class DriveTrainCommand extends Command 
 {
-    private double speed;
-    private double theta;
+    private DoubleSupplier speed;
+    private DoubleSupplier theta;
     private DriveTrainSubsystem drive;
 
-    public void DriveTrainCommand(DoubleSupplier speed, DoubleSupplier theta, DriveTrainSubsystem drive)
+    public DriveTrainCommand(DoubleSupplier speed, DoubleSupplier theta, DriveTrainSubsystem drive)
     {
-        this.speed = speed.getAsDouble();
-        this.theta = theta.getAsDouble();
+        this.speed = speed;
+        this.theta = theta;
         this.drive = drive;
 
         addRequirements(drive);
@@ -34,7 +34,7 @@ public void initialize()
 @Override
 public void execute()
 {
-    drive.arcadeDrive(speed,theta);
+    drive.arcadeDrive(speed.getAsDouble(),theta.getAsDouble());
 }
 
 

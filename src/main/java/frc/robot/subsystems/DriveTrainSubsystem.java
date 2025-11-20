@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.driveDifferentialDrive;
@@ -18,6 +19,8 @@ public class DriveTrainSubsystem extends SubsystemBase
   private CANSparkMax frontRight;
   private CANSparkMax backLeft;
   private CANSparkMax backRight;
+
+  private DifferentialDrive drive;
 
 
 
@@ -56,6 +59,11 @@ public class DriveTrainSubsystem extends SubsystemBase
     motor.getSmartCurrentLimit(Constants.DriveConstants.DRIVE_CURRENT_LIMIT);
     motor.setIdleMode(IdleMode.kBrake);
     motor.burnFlash();
+  }
+
+  public void arcadeDrive(double speed, double theta)
+  {
+    drive.arcadeDrive(speed, theta);
   }
 
   

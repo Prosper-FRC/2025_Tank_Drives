@@ -26,6 +26,7 @@ public class RobotContainer {
   
   // Initialize controller
   private CommandXboxController driverController;
+  private DriveTrainSubsystem drive;
 
   
 
@@ -37,9 +38,16 @@ public class RobotContainer {
     driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
     configureBindings();
 
+    drive = new DriveTrainSubsystem();
+
     // Set a default command for the DriveTrainSubsystem. This is where you supply your joystick
     // inputs as the speed and rotation for arcadeDrive. Keep in mind that you MUST use a lambda expression, as
     // this ensures the program is checking for the joystick to have moved periodically (every 20 milliseconds).
+
+    drive.setDefaultCommand(new DruveTrainCommand(
+      () -> driverController.getLeftY(),
+      () -> driverController.getRightX(),
+      drive));
 
   }
 
