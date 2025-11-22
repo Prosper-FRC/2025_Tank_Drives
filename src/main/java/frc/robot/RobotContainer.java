@@ -4,55 +4,46 @@
 
 package frc.robot;
 
-import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.DriveTrainSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive.DriveState;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
-public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+// Why is there only two spaces in an indentation??? :(
+public class RobotContainer {  
+  private CommandXboxController driveController;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Instantiate subsystem(s)
+  public final Drive robotDrive;
 
-  // Initialize DriveTrainSubsystem
-  private DriveTrainSubsystem drive;
-  
-  // Initialize controller
-  private CommandXboxController driverController;
-
-  
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
+    driveController = new CommandXboxController(Constants.kDriveControllerPort);
+    robotDrive = new Drive();
 
-    // Instantiate controller and drive
-    driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
     configureBindings();
-
-    drive = new DriveTrainSubsystem();
-
-    // Set a default command for the DriveTrainSubsystem. This is where you supply your joystick
-    // inputs as the speed and rotation for arcadeDrive. Keep in mind that you MUST use a lambda expression, as
-    // this ensures the program is checking for the joystick to have moved periodically (every 20 milliseconds).
-    drive.setDefaultCommand(new DriveCommand(
-        () -> driverController.getLeftY(), 
-        () -> driverController.getRightX(), 
-        drive)
-    );
   }
-
   
   private void configureBindings() {
-    
+    // This will prevent the DS from being overflowed with excessive warnings so we can actually see what it is logging.
+    DriverStation.silenceJoystickConnectionWarning(true);
+
+    // Send controller inputs
+    robotDrive.supplyJoytickInputs(() -> driveController.getLeftX(), () -> driveController.getRightX());
+
+    // COMMAND BINDINGS //
+
+    // Set the default command
+    robotDrive.setDefaultCommand(robotDrive.setDriveStateCommandContinuous(DriveState.ArcadeDrive));
+
+    // Button to hard stop the motors
+    driveController.x()
+      .onTrue(robotDrive.setDriveStateCommandContinuous(DriveState.Stop))
+      .onFalse(robotDrive.setDriveStateCommand(DriveState.ArcadeDrive));
+
+    // Button to enter test mode
+    driveController.rightBumper().and(driveController.leftBumper())
+      .onTrue(robotDrive.setDriveStateCommandContinuous(DriveState.Test))
+      .onFalse(robotDrive.setDriveStateCommand(DriveState.ArcadeDrive));
   }
 
 
