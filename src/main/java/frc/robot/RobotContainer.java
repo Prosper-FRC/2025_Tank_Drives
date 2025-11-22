@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.DriveTrainCommand;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -30,7 +32,7 @@ public class RobotContainer {
     
     drive = new DriveTrainSubsystem();
     
-    drive.setDefaultCommand(new DriveCommand(
+    drive.setDefaultCommand(new DriveTrainCommand(
         () -> m_driverController.getLeftY(), 
         () -> m_driverController.getRightX(), 
         drive)
