@@ -21,6 +21,8 @@ public class DriveTrainCommand extends Command {
     this.speed = speed;
     this.theta = theta;
     this.drive = drive;
+
+    addRequirements(drive);
   }
 
   // Called when the command is initially scheduled.
