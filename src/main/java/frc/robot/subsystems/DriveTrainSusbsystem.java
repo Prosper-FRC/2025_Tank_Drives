@@ -30,6 +30,11 @@ public class DriveTrainSusbsystem extends SubsystemBase {
     backLeft = new CANSparkMax(Constants.DriveConstants.BACK_LEFT_ID, MotorType.kBrushless);
     backRight = new CANSparkMax(Constants.DriveConstants.BACK_RIGHT_ID, MotorType.kBrushless);
 
+    frontLeft.restoreFactoryDefaults();
+    frontRight.restoreFactoryDefaults();
+    backLeft.restoreFactoryDefaults();
+    backRight.restoreFactoryDefaults();
+
     backLeft.follow(frontLeft);
     backRight.follow(frontRight);
 
@@ -49,7 +54,7 @@ public class DriveTrainSusbsystem extends SubsystemBase {
   }
 
   private void configureMotor(CANSparkMax motor) {
-    motor.restoreFactoryDefaults();
+    //motor.restoreFactoryDefaults();
     motor.setSmartCurrentLimit(Constants.DriveConstants.DRIVE_CURRENT_LIMIT);
     motor.setIdleMode(IdleMode.kBrake);
     motor.burnFlash();
