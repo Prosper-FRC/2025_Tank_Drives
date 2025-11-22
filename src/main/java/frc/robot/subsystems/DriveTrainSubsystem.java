@@ -30,16 +30,18 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     drive = new DifferentialDrive(frontLeft, frontRight);
 
+    configureMotors(frontLeft);
+    configureMotors(frontRight);
+    configureMotors(backLeft);
+    configureMotors(backRight);
+
     backLeft.follow(frontLeft);
     backRight.follow(frontRight);
 
     frontLeft.setInverted(true);
     frontRight.setInverted(true);
 
-    configureMotors(frontLeft);
-    configureMotors(frontRight);
-    configureMotors(backLeft);
-    configureMotors(backRight);
+
 
   }
 
