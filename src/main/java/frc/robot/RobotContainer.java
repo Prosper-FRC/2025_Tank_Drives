@@ -44,7 +44,7 @@ public class RobotContainer {
     // this ensures the program is checking for the joystick to have moved periodically (every 20 milliseconds).
     drive.setDefaultCommand(new DriveTrainCommand(
       () -> driverController.getLeftY(),
-      () -> driverController.getLeftX(),
+      () -> driverController.getRightX(),
       drive));
 
   }
