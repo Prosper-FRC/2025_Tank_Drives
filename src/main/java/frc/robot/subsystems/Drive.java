@@ -4,8 +4,13 @@ import static frc.robot.subsystems.DriveConstants.*;
 
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,20 +27,31 @@ public class Drive extends SubsystemBase {
         Test // A test command, do whatever you want with it.
     }
 
-    public final MotorNEO[] kMotors = {
-        new MotorNEO(frontLeft, "FrontLeft"),
-        new MotorNEO(frontRight, "FrontRight"),
-        new MotorNEO(backLeft, "BackLeft"),
-        new MotorNEO(backRight, "BackRight")
+    public final MotorIO[] kMotors;
+
+    @AutoLogOutput(key = "Drive/OdometryPose")
+    public static Pose2d odometryPose = new Pose2d(); 
+
+    public static final driveInputsAutoLogged[] kMotorAutologgers = {
+        new driveInputsAutoLogged(),
+        new driveInputsAutoLogged(),
+        new driveInputsAutoLogged(),
+        new driveInputsAutoLogged()
     };
 
-    public static final driveInputsAutoLogged kMotorAutologger = new driveInputsAutoLogged(); 
-
     public static DriveState robotDriveState = DriveState.ArcadeDrive;
+    
+    @AutoLogOutput(key = "Drive/RotationEstimation")
+    private double rotationEstimation = 0.0;
+    private DifferentialDriveOdometry odometryEstimator = new DifferentialDriveOdometry(new Rotation2d(rotationEstimation), 0, 0);
 
     // Joystick inputs
     private DoubleSupplier speedStick = () -> 0.0;
     private DoubleSupplier thetaStick = () -> 0.0;
+
+    public Drive(MotorIO[] motors) {
+        kMotors = motors;
+    }
 
     public void supplyJoytickInputs(DoubleSupplier speed, DoubleSupplier theta) {
         speedStick = speed;
@@ -45,7 +61,6 @@ public class Drive extends SubsystemBase {
     public void arcadeDrive() {
         // We square the inputs to give a more responive feel (but its all done under the hood which is nice).
         WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(speedStick.getAsDouble(), thetaStick.getAsDouble(), true);
-        
         // Set the target motor speeds
         kMotors[0].setMotorSpeedMPS(speeds.left * kMaxWheelSpeedMPS);
         kMotors[1].setMotorSpeedMPS(speeds.right * kMaxWheelSpeedMPS);
@@ -55,11 +70,26 @@ public class Drive extends SubsystemBase {
     @Override
     public void periodic() {
         // Log inputs to AdvantageKit
-        for(int i = 0; i < kMotors.length; ++i) {
-            // NOTE We're using the same AK auto logger for all four motors which maybe will cause issues? But probably not.
-            kMotors[i].updateInputs(kMotorAutologger);
-            Logger.processInputs("DriveInputs/" + kMotors[i].kName, kMotorAutologger);
-        }
+        kMotors[0].updateInputs(kMotorAutologgers[0]);
+        kMotors[1].updateInputs(kMotorAutologgers[1]);
+        kMotors[2].updateInputs(kMotorAutologgers[2]);
+        kMotors[3].updateInputs(kMotorAutologgers[3]);
+        Logger.processInputs("Drive/Motors/FrontLeft", kMotorAutologgers[0]);
+        Logger.processInputs("Drive/Motors/FrontRight", kMotorAutologgers[1]);
+        Logger.processInputs("Drive/Motors/BackLeft", kMotorAutologgers[2]);
+        Logger.processInputs("Drive/Motors/BackRight", kMotorAutologgers[3]);
+
+        // Estimates how much the robot has rotated without a gyro
+        /*
+         * We are going to use the forward kinematic equations of a differential drive to find the
+         * estimated theta value of the differential drive which should go as follows:
+         * omega = (r/d) * (VR - VL) 
+         * where omega is the angular velocity, r = radius, d = track width, V = velocity and R and L are right and left.
+         * We can then let omega accumulate over intervals to get our estimated rotation.
+         * 
+         * We also need to integrate theta to get the change over a timestep (0.02 seconds).
+         */
+        rotationEstimation += ((kWheelRadius / kTrackWidthMeters) * (kMotorAutologgers[0].speedMPS - kMotorAutologgers[1].speedMPS)) * 0.02;
 
         switch(robotDriveState) {
             case Stop:
@@ -75,6 +105,9 @@ public class Drive extends SubsystemBase {
                 // Do nothing
                 break;
         }
+
+        // Update odometry
+        odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(kMotorAutologgers[0].positionMeters, kMotorAutologgers[1].positionMeters));
     }
 
     // Drive commands

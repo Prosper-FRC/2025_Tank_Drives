@@ -22,15 +22,11 @@ public class MotorNEO implements MotorIO {
     private final DoubleSupplier kPositionMeters;
     private final DoubleSupplier kSpeedMPS;
 
-    // Name for logging purposes
-    public final String kName;
-
-    // Define our control types
+    // Define our control type(s)
     private final ControlType kControlVelocity = ControlType.kVelocity;
 
-    public MotorNEO(motorConfiguration kMotorConfiguration, String motorName) {
+    public MotorNEO(motorConfiguration kMotorConfiguration) {
         kMotor = new SparkMax(kMotorConfiguration.ID(), kMotorConfiguration.type());
-        kName = motorName;
 
         // Configuration of motor
         kConfiguration = new SparkMaxConfig();
@@ -45,11 +41,11 @@ public class MotorNEO implements MotorIO {
         kConfiguration.closedLoop.i(kMotorConfiguration.i(), ClosedLoopSlot.kSlot0);
         kConfiguration.closedLoop.d(kMotorConfiguration.d(), ClosedLoopSlot.kSlot0);
 
-        // TODO: implement feedforward x sysid for some genuine practice
+        // TODO: implement feedforward x sysid with AK for some genuine practice
 
         kMotor.configure(kConfiguration, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // We define our rules to setting kTemperature to take advantage of lazy updating and also make our lives a LOT easier when updating the inputs.
+        // We define our rules to setting the logged values to take advantage of lazy updating and also make our lives a LOT easier when updating the inputs.
         kTemperature = () -> kMotor.getMotorTemperature();
         kPositionMeters = () -> kMotor.getAbsoluteEncoder().getPosition() * 2 * Math.PI * DriveConstants.kWheelRadius;
         kSpeedMPS = () -> kMotor.getAbsoluteEncoder().getVelocity() * 2 * Math.PI * DriveConstants.kWheelRadius;

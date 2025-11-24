@@ -5,9 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.MotorIO;
+import frc.robot.subsystems.MotorNEO;
+import frc.robot.subsystems.MotorSim;
 import frc.robot.subsystems.Drive.DriveState;
+import static frc.robot.subsystems.DriveConstants.*;
 
 // Why is there only two spaces in an indentation??? :(
 public class RobotContainer {  
@@ -18,7 +23,27 @@ public class RobotContainer {
 
   public RobotContainer() {
     driveController = new CommandXboxController(Constants.kDriveControllerPort);
-    robotDrive = new Drive();
+    if(RobotBase.isReal()) {
+      robotDrive = new Drive(new MotorNEO[] {
+        new MotorNEO(frontLeft),
+        new MotorNEO(frontRight),
+        new MotorNEO(backLeft),
+        new MotorNEO(backRight)
+      });
+    }
+    else if(RobotBase.isSimulation()) {
+      robotDrive = new Drive(new MotorSim[] {
+        new MotorSim(),
+        new MotorSim(),
+        new MotorSim(),
+        new MotorSim()
+      });
+    }
+    else {
+      robotDrive = new Drive(new MotorIO[] {
+        null, null, null, null
+      });
+    }
 
     configureBindings();
   }
@@ -28,7 +53,7 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     // Send controller inputs
-    robotDrive.supplyJoytickInputs(() -> driveController.getLeftX(), () -> driveController.getRightX());
+    robotDrive.supplyJoytickInputs(() -> driveController.getLeftY(), () -> driveController.getRightX());
 
     // COMMAND BINDINGS //
 

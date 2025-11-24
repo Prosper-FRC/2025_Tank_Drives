@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
 public class DriveConstants {
     // These are all of our drive constants if you couldn't tell by the name
     public static final record motorConfiguration(int ID, MotorType type, boolean shouldInvert, int followerID, double p, double i, double d) {}
@@ -10,7 +13,7 @@ public class DriveConstants {
     public static final motorConfiguration frontLeft = new motorConfiguration(
         20, 
         MotorType.kBrushless,
-        true,
+        false,
         -1,
         0.15,
         0.0,
@@ -19,7 +22,7 @@ public class DriveConstants {
     public static final motorConfiguration frontRight = new motorConfiguration(
         21, 
         MotorType.kBrushless,
-        false,
+        true,
         -1,
         0.15,
         0.0,
@@ -48,6 +51,8 @@ public class DriveConstants {
     public static final int kStallCurrentAmps = 40; // Apparently this is supposed to be 40
     public static final IdleMode kSparkIdleMode = IdleMode.kBrake; // This should be constant across all motors bruh 
     public static final double kWheelRadius = 0.67; // TODO: Set this value so the encoder doesn't tweak out
+    public static final double kGearRatio = 0.25; // TODO: Fix this to the actual value
+    public static final double kTrackWidthMeters = 1.0; // TODO: Also fix this one
     
     // Only configures per wheel speed because separating linear speed and theta speed is a little strange when not using swerve
     public static final double kMaxWheelSpeedMPS = 4.0;

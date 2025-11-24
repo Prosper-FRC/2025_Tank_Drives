@@ -9,8 +9,13 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.MotorIO;
+import frc.robot.subsystems.MotorNEO;
+import frc.robot.subsystems.MotorSim;
 
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
@@ -25,8 +30,15 @@ public class Robot extends LoggedRobot {
     Logger.recordMetadata("ProjectName", "Tank Drive 2025");
 
     // Taken directly from AK's Documentation. https://docs.advantagekit.org/getting-started/installation/vscode-welcome
-    Logger.addDataReceiver(new WPILOGWriter());
-    Logger.addDataReceiver(new NT4Publisher());
+    if(RobotBase.isReal()) {
+      Logger.addDataReceiver(new WPILOGWriter());
+      Logger.addDataReceiver(new NT4Publisher());
+    }
+    else if(RobotBase.isSimulation()) {
+      Logger.addDataReceiver(new NT4Publisher());
+    }
+    else {
+    }
 
     Logger.start();
   }
