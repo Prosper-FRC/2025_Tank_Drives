@@ -31,7 +31,9 @@ public class DriveTrainCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    drive.arcadeDrive(speed.getAsDouble(), theta.getAsDouble());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
