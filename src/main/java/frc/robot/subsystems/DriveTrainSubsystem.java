@@ -14,7 +14,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.DriveConstants;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   
@@ -35,17 +35,16 @@ public class DriveTrainSubsystem extends SubsystemBase {
      * @return */
     public void DriveTrainSusbsystem() {
     // Instantiate motors
-    frontLeft = new SparkMax(Constants.DriveConstants.FRONT_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
-    frontRight = new SparkMax(Constants.DriveConstants.FRONT_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
-    backLeft = new SparkMax(Constants.DriveConstants.BACK_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
-    backRight = new SparkMax(Constants.DriveConstants.BACK_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
+    frontLeft = new SparkMax(DriveConstants.FRONT_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
+    frontRight = new SparkMax(DriveConstants.FRONT_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
+    backLeft = new SparkMax(DriveConstants.BACK_LEFT_ID, SparkLowLevel.MotorType.kBrushless);
+    backRight = new SparkMax(DriveConstants.BACK_RIGHT_ID, SparkLowLevel.MotorType.kBrushless);
 
     fLConfig = new SparkMaxConfig();
     fRConfig = new SparkMaxConfig();
     bLConfig = new SparkMaxConfig();
     bRConfig = new SparkMaxConfig();
-
-    // Dont need to reset factory defaults anymore
+    
     fLConfig
       .inverted(true)
       .idleMode(IdleMode.kBrake)
