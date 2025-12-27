@@ -19,8 +19,9 @@ public interface DriveIO {
         public double rightAppliedVolts = 0.0;
     }
 
-    /**Updates the set of loggable inputs */
+    // Updates the set of loggable inputs
     public default void updateInputs(DriveIOInputs inputs) {}
 
+    // Sets voltage of motors
     
 }
