@@ -11,10 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.drive.DriveConstants.*;
+import static frc.robot.subsystems.DriveConstants.*;
 
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
-import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -47,8 +46,6 @@ public class Drive extends SubsystemBase {
   @AutoLogOutput(key = "Drive/OdometryPose")
   public static Pose2d odometryPose = new Pose2d(); 
 
-  private final SysIdRoutine sysId;
-
   public Drive(DriveIO io) {
     this.io = io;
   }
@@ -59,22 +56,10 @@ public class Drive extends SubsystemBase {
     Logger.processInputs("Drive", inputs);
 
 
-    rotationEstimation += ((kWheelRadius / kTrackWidthMeters) * (kMotorAutologgers[0].speedMPS - kMotorAutologgers[1].speedMPS)) * 0.02;
+    //rotationEstimation += ((DriveConstants.kWheelRadius / DriveConstants.kTrackWidthMeters) * (FRONT LEFT MOTOR.speedMPS - FRONT RIGHT MOTOR.speedMPS)) * 0.02;
 
     // Update odometry
-        odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(kMotorAutologgers[0].positionMeters, kMotorAutologgers[1].positionMeters));
-  }
-
-
-
-  /** Returns a command to run a quasistatic test in the specified direction. */
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return sysId.quasistatic(direction);
-  }
-
-  /** Returns a command to run a dynamic test in the specified direction. */
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return sysId.dynamic(direction);
+    //odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(FRONT LEFT MOTOR.positionMeters, FRONT RIGHT MOTOR.positionMeters));
   }
 
 

@@ -10,18 +10,21 @@ import org.littletonrobotics.junction.AutoLog;
 public interface DriveIO {
     @AutoLog
     public static class DriveIOInputs {
-        public double leftPositionRad = 0.0;
-        public double leftVelocityRadPerSec = 0.0;
+        public double leftPositionMeters = 0.0;
+        public double leftSpeedMPS = 0.0;
         public double leftAppliedVolts = 0.0;
             
-        public double rightPositionRad = 0.0;
-        public double rightVelocityRadPerSec = 0.0;
+        public double rightPositionMeters = 0.0;
+        public double rightSpeedMPS = 0.0;
         public double rightAppliedVolts = 0.0;
     }
 
     // Updates the set of loggable inputs
     public default void updateInputs(DriveIOInputs inputs) {}
 
-    // Sets voltage of motors
+    // Drives the robot using arcade drive
+    public default void arcadeDriver(double speed, double theta) {}
     
+    // Stops everything
+    public default void stop() {}
 }

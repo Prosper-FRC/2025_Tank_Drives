@@ -11,10 +11,10 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 /** Add your docs here. */
 public class DriveConstants {
 
-    public static final int FRONT_LEFT_ID = 20;
-    public static final int FRONT_RIGHT_ID = 21;
-    public static final int BACK_LEFT_ID = 22;
-    public static final int BACK_RIGHT_ID = 23;
+    public static final int kfrontLeftID = 20;
+    public static final int kfrontRightID = 21;
+    public static final int kBackLeftID = 22;
+    public static final int kBackRightID = 23;
     
     public static final int DRIVE_CURRENT_LIMIT = 40;
 
@@ -26,31 +26,41 @@ public class DriveConstants {
     ) {}
 
     public static final motorConfig fLConfig = new motorConfig(
-        FRONT_LEFT_ID, 
+        kfrontLeftID, 
         MotorType.kBrushless, 
         true, 
         -1
     );
 
     public static final motorConfig fRConfig = new motorConfig(
-        FRONT_RIGHT_ID, 
+        kfrontRightID, 
         MotorType.kBrushless, 
         false, 
         -1
     );
 
     public static final motorConfig bLConfig = new motorConfig(
-        BACK_LEFT_ID, 
+        kBackLeftID, 
         MotorType.kBrushless, 
         true, 
-        FRONT_LEFT_ID
+        kfrontLeftID
     );
 
     public static final motorConfig bRConfig = new motorConfig(
-        BACK_RIGHT_ID, 
+        kBackRightID, 
         MotorType.kBrushless, 
         false, 
-        FRONT_RIGHT_ID
+        kfrontRightID
     );
 
+
+    // CONSTANTS ACROSS ALL MOTORS
+    public static final int kStallCurrentAmps = 40; 
+    public static final IdleMode kSparkIdleMode = IdleMode.kBrake; 
+    public static final double kWheelRadius = 0.69; // TODO: Fix value
+    public static final double kGearRatio = 0.25; // TODO: Fix value
+    public static final double kTrackWidthMeters = 1.0; // TODO: Fix value
+    
+    // Only configures per wheel speed because separating linear speed and theta speed is a little strange when not using swerve
+    public static final double kMaxWheelSpeedMPS = 4.0;
 }
