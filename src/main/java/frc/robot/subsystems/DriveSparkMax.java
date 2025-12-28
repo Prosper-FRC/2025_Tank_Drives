@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.subsystems.DriveConstants.motorConfig;
 
 /** Add your docs here. */
 public class DriveSparkMax implements DriveIO {
@@ -49,23 +50,23 @@ public class DriveSparkMax implements DriveIO {
         bRConfig = new SparkMaxConfig();
         
         fLConfig
-        .inverted(true)
-        .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(DriveConstants.DRIVE_CURRENT_LIMIT);
+        .inverted(DriveConstants.fLConfig.inverted())
+        .idleMode(DriveConstants.kIdleMode)
+        .smartCurrentLimit(DriveConstants.kDriveCurrentLimit);
         fRConfig
-        .inverted(false)
+        .inverted(DriveConstants.fRConfig.inverted())
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(DriveConstants.DRIVE_CURRENT_LIMIT);
+        .smartCurrentLimit(DriveConstants.kDriveCurrentLimit);
         bLConfig
-        .inverted(true)
-        .follow(frontLeft)
+        .inverted(DriveConstants.bLConfig.inverted())
+        .follow(DriveConstants.bLConfig.followID())
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(DriveConstants.DRIVE_CURRENT_LIMIT);
+        .smartCurrentLimit(DriveConstants.kDriveCurrentLimit);
         bRConfig
-        .inverted(false)
-        .follow(frontRight)
+        .inverted(DriveConstants.bRConfig.inverted())
+        .follow(DriveConstants.bRConfig.followID())
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(DriveConstants.DRIVE_CURRENT_LIMIT);
+        .smartCurrentLimit(DriveConstants.kDriveCurrentLimit);
 
         frontLeft.configure(fLConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontRight.configure(fRConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

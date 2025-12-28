@@ -15,48 +15,36 @@ public class DriveConstants {
     public static final int kfrontRightID = 21;
     public static final int kBackLeftID = 22;
     public static final int kBackRightID = 23;
-    
-    public static final int DRIVE_CURRENT_LIMIT = 40;
 
     public static final record motorConfig(
-        int ID,
-        MotorType type,
         boolean inverted, 
         int followID 
     ) {}
 
     public static final motorConfig fLConfig = new motorConfig(
-        kfrontLeftID, 
-        MotorType.kBrushless, 
         true, 
         -1
     );
 
     public static final motorConfig fRConfig = new motorConfig(
-        kfrontRightID, 
-        MotorType.kBrushless, 
         false, 
         -1
     );
 
     public static final motorConfig bLConfig = new motorConfig(
-        kBackLeftID, 
-        MotorType.kBrushless, 
         true, 
         kfrontLeftID
     );
 
     public static final motorConfig bRConfig = new motorConfig(
-        kBackRightID, 
-        MotorType.kBrushless, 
         false, 
         kfrontRightID
     );
 
 
     // CONSTANTS ACROSS ALL MOTORS
-    public static final int kStallCurrentAmps = 40; 
-    public static final IdleMode kSparkIdleMode = IdleMode.kBrake; 
+    public static final int kDriveCurrentLimit = 40;
+    public static final IdleMode kIdleMode = IdleMode.kBrake; 
     public static final double kWheelRadius = 0.69; // TODO: Fix value
     public static final double kGearRatio = 0.25; // TODO: Fix value
     public static final double kTrackWidthMeters = 1.0; // TODO: Fix value
