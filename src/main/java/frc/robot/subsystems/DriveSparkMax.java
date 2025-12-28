@@ -6,6 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -29,13 +32,11 @@ public class DriveSparkMax implements DriveIO {
 
     private DifferentialDrive drive;
 
-    private final double kleftPositionMeters = 0.0;
-    private final double kleftSpeedMPS = 0.0;
-    private final double kleftAppliedVolts = 0.0;
+    private DoubleSupplier leftPositionMeters;
+    private DoubleSupplier leftSpeedMPS;
             
-    private final double krightPositionMeters = 0.0;
-    private final double krightSpeedMPS = 0.0;
-    private final double krightAppliedVolts = 0.0;
+    private DoubleSupplier rightPositionMeters;
+    private DoubleSupplier rightSpeedMPS;
 
     public DriveSparkMax() {
         // Instantiate motors
@@ -74,6 +75,34 @@ public class DriveSparkMax implements DriveIO {
         backRight.configure(bRConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         drive = new DifferentialDrive(frontLeft, frontRight);
+
+        leftPositionMeters = () -> frontLeft.getAbsoluteEncoder().getPosition() * 2 * Math.PI * DriveConstants.kWheelRadius;
+        leftSpeedMPS = () -> frontLeft.getAbsoluteEncoder().getVelocity() * 2 * Math.PI * DriveConstants.kWheelRadius;
+
+        rightPositionMeters = () -> frontRight.getAbsoluteEncoder().getPosition() * 2 * Math.PI * DriveConstants.kWheelRadius;
+        rightSpeedMPS = () -> frontRight.getAbsoluteEncoder().getVelocity() * 2 * Math.PI * DriveConstants.kWheelRadius;
+    }
+
+    // Updates the set of loggable inputs
+    public void updateInputs(DriveIOInputs inputs) {
+        inputs.leftPositionMeters = leftPositionMeters.getAsDouble();
+        inputs.leftSpeedMPS = leftSpeedMPS.getAsDouble();
+
+        inputs.rightPositionMeters = rightPositionMeters.getAsDouble();
+        inputs.rightSpeedMPS = rightSpeedMPS.getAsDouble();
+    }
+
+    // Drives the robot using arcade drive
+    public void arcadeDriver(double speed, double theta) {
+        drive.arcadeDrive(speed, theta);
+    }
+    
+    // Stops everything
+    public void stop() {
+        frontLeft.stopMotor();
+        frontRight.stopMotor();
+        backLeft.stopMotor(); // These two are probably unessecary but better safe than sorry
+        backRight.stopMotor();;
     }
 
 
