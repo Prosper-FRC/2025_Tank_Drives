@@ -43,7 +43,7 @@ public class DriveConstants {
     // CONSTANTS ACROSS ALL MOTORS
     public static final int kDriveCurrentLimit = 40;
     public static final IdleMode kIdleMode = IdleMode.kBrake; 
-    public static final double kWheelRadius = 0.69; // TODO: Fix value
+    public static final double kWheelRadius = 0.1524; // i guessed that this is in meters and just used 6 inch diameter wheels
     public static final double kGearRatio = 0.25; // TODO: Fix value
     public static final double kTrackWidthMeters = 1.0; // TODO: Fix value
     
