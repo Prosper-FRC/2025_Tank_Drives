@@ -15,7 +15,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.subsystems.DriveConstants.motorConfig;
 
 /** Add your docs here. */
 public class DriveSparkMax implements DriveIO {
@@ -84,7 +83,8 @@ public class DriveSparkMax implements DriveIO {
     }
 
     // Updates the set of loggable inputs
-    public void updateInputs(DriveIOInputs inputs) {
+    @Override
+    public void updateInputs(DriveInputs inputs) {
         inputs.leftPositionMeters = leftPositionMeters.getAsDouble();
         inputs.leftSpeedMPS = leftSpeedMPS.getAsDouble();
 
@@ -93,11 +93,13 @@ public class DriveSparkMax implements DriveIO {
     }
 
     // Drives the robot using arcade drive
+    @Override
     public void arcadeDriver(double speed, double theta) {
         drive.arcadeDrive(speed, theta);
     }
     
     // Stops everything
+    @Override
     public void stop() {
         frontLeft.stopMotor();
         frontRight.stopMotor();

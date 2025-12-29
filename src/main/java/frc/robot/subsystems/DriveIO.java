@@ -9,7 +9,7 @@ import org.littletonrobotics.junction.AutoLog;
 // Mostly copied over from Advantage Kit DiffDrive Template
 public interface DriveIO {
     @AutoLog
-    public static class DriveIOInputs {
+    public static class DriveInputs {
         public double leftPositionMeters = 0.0;
         public double leftSpeedMPS = 0.0;
             
@@ -18,7 +18,7 @@ public interface DriveIO {
     }
 
     // Updates the set of loggable inputs
-    public default void updateInputs(DriveIOInputs inputs) {}
+    public default void updateInputs(DriveInputs inputs) {}
 
     // Drives the robot using arcade drive
     public default void arcadeDriver(double speed, double theta) {}

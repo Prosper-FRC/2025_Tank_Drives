@@ -1,66 +1,66 @@
-// Copyright 2021-2025 FRC 6328
-// http://github.com/Mechanical-Advantage
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// version 3 as published by the Free Software Foundation or
-// available in the root directory of this project.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
 
-package frc.robot.subsystems;
+// // Copyright 2021-2025 FRC 6328
+// // http://github.com/Mechanical-Advantage
+// //
+// // This program is free software; you can redistribute it and/or
+// // modify it under the terms of the GNU General Public License
+// // version 3 as published by the Free Software Foundation or
+// // available in the root directory of this project.
+// //
+// // This program is distributed in the hope that it will be useful,
+// // but WITHOUT ANY WARRANTY; without even the implied warranty of
+// // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// // GNU General Public License for more details.
 
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.DriveConstants.*;
+// package frc.robot.subsystems;
 
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants;
-import frc.robot.Constants.Mode;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
+// import static edu.wpi.first.units.Units.*;
+// import static frc.robot.subsystems.DriveConstants.*;
 
-public class Drive extends SubsystemBase {
-  private final DriveIO io;
-  private final DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
+// import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+// import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.geometry.Rotation2d;
+// import edu.wpi.first.math.geometry.Twist2d;
+// import edu.wpi.first.math.kinematics.ChassisSpeeds;
+// import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+// import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+// import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
+// import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+// import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation.Alliance;
+// import edu.wpi.first.wpilibj2.command.Command;
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+// import frc.robot.Constants;
+// import org.littletonrobotics.junction.AutoLogOutput;
+// import org.littletonrobotics.junction.Logger;
 
-  @AutoLogOutput(key = "Drive/RotationEstimation")
-  private double rotationEstimation = 0.0;
-  private DifferentialDriveOdometry odometryEstimator = new DifferentialDriveOdometry(new Rotation2d(rotationEstimation), 0, 0);
+// public class Drive extends SubsystemBase {
+//   private final DriveIO io;
+//   //private final DriveInputsAutoLogged inputs = new DriveInputsAutoLogged();
 
-  @AutoLogOutput(key = "Drive/OdometryPose")
-  public static Pose2d odometryPose = new Pose2d(); 
+//   @AutoLogOutput(key = "Drive/RotationEstimation")
+//   private double rotationEstimation = 0.0;
+//   private DifferentialDriveOdometry odometryEstimator = new DifferentialDriveOdometry(new Rotation2d(rotationEstimation), 0, 0);
 
-  public Drive(DriveIO io) {
-    this.io = io;
-  }
+//   @AutoLogOutput(key = "Drive/OdometryPose")
+//   public static Pose2d odometryPose = new Pose2d(); 
 
-  @Override
-  public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Drive", inputs);
+//   public Drive(DriveIO io) {
+//     this.io = io;
+//   }
 
-
-    //rotationEstimation += ((DriveConstants.kWheelRadius / DriveConstants.kTrackWidthMeters) * (FRONT LEFT MOTOR.speedMPS - FRONT RIGHT MOTOR.speedMPS)) * 0.02;
-
-    // Update odometry
-    //odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(FRONT LEFT MOTOR.positionMeters, FRONT RIGHT MOTOR.positionMeters));
-  }
+//   @Override
+//   public void periodic() {
+//     //io.updateInputs(inputs);
+//     //Logger.processInputs("Drive", inputs);
 
 
-}
+//     //rotationEstimation += ((DriveConstants.kWheelRadius / DriveConstants.kTrackWidthMeters) * (FRONT LEFT MOTOR.speedMPS - FRONT RIGHT MOTOR.speedMPS)) * 0.02;
+
+//     // Update odometry
+//     //odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(FRONT LEFT MOTOR.positionMeters, FRONT RIGHT MOTOR.positionMeters));
+//   }
+
+
+// }
