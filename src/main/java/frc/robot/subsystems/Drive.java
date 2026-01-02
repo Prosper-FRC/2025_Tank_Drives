@@ -83,7 +83,7 @@ public class Drive extends SubsystemBase {
         }
 
         // Update odometry
-        odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(inputs.leftSpeedMPS, inputs.rightSpeedMPS));
+        odometryPose = odometryEstimator.update(new Rotation2d(rotationEstimation), new DifferentialDriveWheelPositions(inputs.leftPositionMeters, inputs.rightPositionMeters));
     }
 
     // Drive commands

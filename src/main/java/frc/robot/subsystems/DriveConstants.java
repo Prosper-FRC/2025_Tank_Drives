@@ -48,5 +48,5 @@ public class DriveConstants {
     public static final double kTrackWidthMeters = 1.0; // TODO: Fix value
     
     // Only configures per wheel speed because separating linear speed and theta speed is a little strange when not using swerve
-    public static final double kMaxWheelSpeedMPS = 4.0;
+    public static final double kMaxWheelSpeedMPS = 8.0; // it was running really slow so i doubled it
 }
